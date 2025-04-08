@@ -1,12 +1,19 @@
-import {createContext} from 'react';
+import {createContext, useState} from 'react';
 
 
 export const AppContext = createContext();
 
 export const AppContextProvider = (props) => {
 
+    const [showStudentLogin, setShowStudentLogin] = useState(false)
 
-    const value = {}
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+
+    const value = {
+        showStudentLogin, setShowStudentLogin,
+        isLoggedIn, setIsLoggedIn
+    }
 
 
     return (

@@ -3,6 +3,10 @@ import logo_dark from './logo_dark.svg'
 import search_icon from './search_icon.svg'
 import cross_icon from './cross_icon.svg'
 import upload_area from './upload_area.svg'
+import email_icon from './email_icon.svg'
+import person_icon from './person_icon.svg'
+import lock_icon from './lock_icon.svg'
+import google_icon from './google.png'
 import sketch from './sktech.svg'
 import microsoft_logo from './microsoft_logo.svg'
 import walmart_logo from './walmart_logo.svg'
@@ -66,6 +70,10 @@ export const assets = {
     dropdown_icon,
     cross_icon,
     upload_area,
+    email_icon,
+    lock_icon,
+    person_icon,
+    google_icon,
     logo_dark,
     down_arrow_icon,
     time_left_clock_icon,
