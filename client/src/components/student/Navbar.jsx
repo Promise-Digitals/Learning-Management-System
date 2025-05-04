@@ -35,7 +35,7 @@ const Navbar = () => {
                 {
                     isLoggedIn ?
                         <div className='relative group'>
-                            <div className='w-8 h-8 rounded-full border-2 border-[#1269e2] flex items-center justify-center'>P</div>
+                            <div className='w-7 h-7 rounded-full border-2 border-[#1269e2] flex items-center justify-center'>P</div>
 
                             <div className='absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded pt-10'>
                                 <ul className='list-none m-0 p-1 bg-white rounded-md border border-gray-300 text-sm'>
