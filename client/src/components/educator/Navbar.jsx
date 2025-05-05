@@ -19,7 +19,7 @@ const Navbar = () => {
     return (
         <div className='flex items-center justify-between px-4 md:px-8 border-b border-gray-500 py-3' >
             <Link to='/'>
-                <img src={assets.logo} className='w-24 lg:w-28 cursor-pointer'  alt="" />
+                <img src={assets.logo} className='w-22 lg:w-26 cursor-pointer'  alt="" />
             </Link>
             <div className='flex items-center gap-5 text-gray-600'>
                 {/* promise to be changed to user.fullname after backend */}
