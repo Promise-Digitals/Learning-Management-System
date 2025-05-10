@@ -14,6 +14,7 @@ import StudentsEnrolled from './pages/educator/StudentsEnrolled'
 import Navbar from './components/student/Navbar'
 import { AppContext } from './context/AppContext'
 import StudentLogin from './components/student/StudentLogin'
+import "quill/dist/quill.snow.css";
 
 const App = () => {
 
