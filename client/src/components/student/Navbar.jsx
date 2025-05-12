@@ -2,30 +2,40 @@ import React, { useContext, useState } from 'react'
 import { assets } from '../../assets/assets'
 import { Link } from 'react-router-dom'
 import { AppContext } from '../../context/AppContext'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const Navbar = () => {
 
     const isCourseListPage = location.pathname.includes('/course-list')
 
-    const { setShowStudentLogin, isLoggedIn, setIsLoggedIn, navigate, isEducator} = useContext(AppContext)
+    const { setShowStudentLogin, isLoggedIn, setIsLoggedIn, backendUrl, navigate, isEducator, userData, setUserData } = useContext(AppContext)
 
     const handleLogout = async () => {
-        setIsLoggedIn(false)
-        setShowStudentLogin(false)
-        navigate('/')
+        try {
+            await axios.get(backendUrl + "/api/auth/logout", { withCredentials: true })
+
+            setUserData(false)
+            setIsLoggedIn(false)
+            navigate('/')
+            toast.success("Successfully logged out")
+
+        } catch (error) {
+            toast.error("Something went wrong")
+        }
     }
 
 
     return (
         <div className={`flex items-center justify-between px-4 sm:px-10 text-sm md:px-14 lg:px-36 border-b border-gray-500 py-4 ${isCourseListPage ? "bg-white" : "bg-cyan-100/70"} `}>
-            <img src={assets.logo} onClick={() => navigate('/')}  alt="" className='w-24 lg:w-28 cursor-pointer' />
+            <img src={assets.logo} onClick={() => navigate('/')} alt="" className='w-24 lg:w-28 cursor-pointer' />
 
             <div className='hidden md:flex items-center gap-5 text-gray-600'>
                 <div className='flex items-center gap-2'>
                     {
                         isLoggedIn &&
                         <>
-                            <button onClick={() => {navigate('/educator')}}>{isEducator ? 'Educator Dashboard' : 'Become Educator'}</button>
+                            <button onClick={() => { navigate('/educator') }}>{isEducator ? 'Educator Dashboard' : 'Become Educator'}</button>
                             |
                             <Link to="/my-enrollments">My Enrollments</Link>
                         </>
@@ -35,7 +45,7 @@ const Navbar = () => {
                 {
                     isLoggedIn ?
                         <div className='relative group'>
-                            <div className='w-7 h-7 rounded-full border-2 border-[#1269e2] flex items-center justify-center'>P</div>
+                            <img src={userData.image} className='w-8 h-8 rounded-full  border-3 border-[#1269e2] object-cover object-center' alt="" />
 
                             <div className='absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded pt-10'>
                                 <ul className='list-none m-0 p-1 bg-white rounded-md border border-gray-300 text-sm'>
@@ -56,7 +66,7 @@ const Navbar = () => {
                         {
                             isLoggedIn &&
                             <>
-                                <button onClick={() => {navigate('/educator')}}>{isEducator ? 'Educator Dashboard' : 'Become Educator'}</button>
+                                <button onClick={() => { navigate('/educator') }}>{isEducator ? 'Educator Dashboard' : 'Become Educator'}</button>
                                 |
                                 <Link to="/my-enrollments">Enrollments</Link>
                             </>

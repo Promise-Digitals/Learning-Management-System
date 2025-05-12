@@ -2,6 +2,8 @@ import {createContext, useEffect, useState} from 'react';
 import { dummyCourses } from '../assets/assets';
 import { useNavigate } from 'react-router-dom';
 import humanizeDuration from 'humanize-duration'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 
 
 export const AppContext = createContext();
@@ -9,6 +11,10 @@ export const AppContext = createContext();
 export const AppContextProvider = (props) => {
 
     const currency = import.meta.env.VITE_CURRENCY
+
+    const backendUrl = import.meta.env.VITE_BACKEND_URL
+
+    const [userData, setUserData] = useState(false)
 
     const navigate = useNavigate()
 
@@ -26,6 +32,21 @@ export const AppContextProvider = (props) => {
      // Fetch all courses
     const fetchAllCourses = async () => {
         setAllCourses(dummyCourses)
+    }
+
+
+    const fetchAuthenticatedUser = async () => {
+        try {
+            const {data} = await axios.get(backendUrl + '/api/users/user', { withCredentials: true })
+            if (data.success) {
+                setUserData(data.user)
+                console.log(data.user)
+                setIsLoggedIn(true)
+            }
+        } catch (error) {
+            console.log(error)
+            setIsLoggedIn(false)
+        }
     }
 
 
@@ -82,8 +103,14 @@ export const AppContextProvider = (props) => {
 
 
     useEffect(() => {
+        fetchAuthenticatedUser()
         fetchAllCourses()
         fetchUserEnrolledCourses()
+    }, [])
+
+
+    useEffect(() => {
+        fetchAuthenticatedUser()
     }, [])
 
 
@@ -99,7 +126,10 @@ export const AppContextProvider = (props) => {
         calculateCourseDuration,
         calculateNoOfLectures,
         enrolledCourses,
-        fetchUserEnrolledCourses
+        fetchUserEnrolledCourses,
+        backendUrl,
+        userData, setUserData,
+        fetchAuthenticatedUser
     }
 
 

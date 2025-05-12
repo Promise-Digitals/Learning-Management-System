@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../context/AppContext'
 import { assets } from '../../assets/assets'
+import { toast } from 'react-toastify'
+import axios from 'axios'
 
 const Login = () => {
 
-    const { setShowStudentLogin, setIsLoggedIn } = useContext(AppContext)
+    const { setShowStudentLogin, setIsLoggedIn, backendUrl, fetchAuthenticatedUser } = useContext(AppContext)
 
     const [state, setState] = useState('Login')
     const [name, setName] = useState('')
@@ -16,19 +18,49 @@ const Login = () => {
     const [isTextDataSubmited, setIsTextDataSubmited] = useState(false)
 
     const onSubmitHandler = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
         if (state === "Sign Up" && !isTextDataSubmited) {
             return setIsTextDataSubmited(true)
-        }else{
-            setIsLoggedIn(true)
-            setShowStudentLogin(false)
         }
-    }
 
-    const onGoogleSubmitHandler = async () => {
-        setIsLoggedIn(true)
-        setShowStudentLogin(false)
+        try {
+
+            if (state === "Login") {
+                
+                const {data} = await axios.post(backendUrl + '/api/auth/login', {email, password}, { withCredentials: true })
+
+                if (data.success) {
+                    setShowStudentLogin(false)
+                    fetchAuthenticatedUser()
+                    toast.success("You're successfully logged in")
+                }else{
+                    setIsLoggedIn(false)
+                    toast.error(data.message)
+                }
+            }else{
+                const formData = new FormData()
+
+                formData.append('name', name)
+                formData.append('password', password)
+                formData.append('email', email)
+                formData.append('image', image)
+
+                const { data } = await axios.post(backendUrl + "/api/auth/register", formData, { withCredentials: true })
+
+                if (data.success) {
+                    setShowStudentLogin(false)
+                    fetchAuthenticatedUser()
+                    toast.success("Registered, login to continue")
+                }else{
+                    setIsLoggedIn(false)
+                    toast.error(data.message)
+                }
+            }
+            
+        } catch (error) {
+            toast.error(error.message)
+        }
     }
 
 
@@ -49,7 +81,7 @@ const Login = () => {
                     <h1 className='text-center text-xl text-neutral-700 font-semibold'>Student {state}</h1>
                     <p className='text-sm'>Welcome back! Please <span className='lowercase'>{state}</span> to continue</p>
 
-                    <button onClick={onGoogleSubmitHandler} className='w-full border flex items-center justify-center gap-2 py-2 rounded-full text-sm mt-4'><img className='w-4' src={assets.google_icon} alt="" />{state} with Google</button>
+                    <a href='http://localhost:5000/auth/google' className='w-full border flex items-center justify-center gap-2 py-2 rounded-full text-sm mt-4'><img className='w-4' src={assets.google_icon} alt="" />{state} with Google</a>
 
                     <p className='text-center mt-2 mb-2'>or</p>
 

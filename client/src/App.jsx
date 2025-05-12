@@ -15,17 +15,19 @@ import Navbar from './components/student/Navbar'
 import { AppContext } from './context/AppContext'
 import StudentLogin from './components/student/StudentLogin'
 import "quill/dist/quill.snow.css";
+import { ToastContainer} from 'react-toastify';
 
 const App = () => {
 
   const isEducatorRoute = useMatch('/educator/*')
 
-  const { showStudentLogin, isLoggedIn } = useContext(AppContext)
+  const { showStudentLogin } = useContext(AppContext)
 
 
 
   return (
     <div className='text-default min-h-screen bg-white'>
+      <ToastContainer />
 
       {
         showStudentLogin && <StudentLogin />
