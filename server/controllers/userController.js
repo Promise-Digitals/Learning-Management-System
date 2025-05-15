@@ -2,13 +2,18 @@ import User from "../models/user.js";
 
 // API to get user data
 export const getUserData = async (req, res) => {
-    return res.status(200).json({
-        success: true,
-        user: {
-            id: req.user._id,
-            name: req.user.name,
-            email: req.user.email,
-            image: req.user.image
-        }
-    })
+    try {
+        
+        const user = await User.findOne({_id: req.user._id}).select('-password')
+
+        res.status(200).json({
+            success: true,
+            user
+        })
+    } catch (error) {
+        res.json({
+            success: false,
+            message: error.message
+        })
+    }
 }

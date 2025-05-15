@@ -38,7 +38,7 @@ const Navbar = () => {
                 {
                     isLoggedIn ?
                         <div className='relative group'>
-                            <img src={userData.image} className='w-8 h-8 rounded-full  border-3 border-[#1269e2] object-cover object-center' alt="" />
+                            <img src={userData.profile} className='w-8 h-8 rounded-full  border-3 border-[#1269e2] object-cover object-center' alt="" />
 
                             <div className='absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded pt-10'>
                                 <ul className='list-none m-0 p-1 bg-white rounded-md border border-gray-300 text-sm'>

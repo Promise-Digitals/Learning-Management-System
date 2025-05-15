@@ -15,9 +15,13 @@ const userSchema = new mongoose.Schema(
         password: {
             type: String,
         },
-        image: {
+        profile: {
             type: String,
             required: true
+        },
+        isEducator: {
+            type: Boolean,
+            default: false
         },
         enrolledCourses: [
             {

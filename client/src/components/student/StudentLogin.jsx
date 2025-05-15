@@ -13,7 +13,7 @@ const Login = () => {
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
 
-    const [image, setImage] = useState(false)
+    const [profile, setProfile] = useState(false)
 
     const [isTextDataSubmited, setIsTextDataSubmited] = useState(false)
 
@@ -44,7 +44,7 @@ const Login = () => {
                 formData.append('name', name)
                 formData.append('password', password)
                 formData.append('email', email)
-                formData.append('image', image)
+                formData.append('profile', profile)
 
                 const { data } = await axios.post(backendUrl + "/api/auth/register", formData, { withCredentials: true })
 
@@ -89,9 +89,9 @@ const Login = () => {
                         {state === "Sign Up" && isTextDataSubmited ?
                             <>
                                 <div className='flex items-center gap-4 my-10'>
-                                    <label htmlFor="image">
-                                        <img className='w-16 rounded-full' src={image ? URL.createObjectURL(image) : assets.upload_area} alt="" />
-                                        <input onChange={e => setImage(e.target.files[0])} type="file" name="" id="image" hidden />
+                                    <label htmlFor="profile">
+                                        <img className='w-16 rounded-full' src={profile ? URL.createObjectURL(profile) : assets.upload_area} alt="" />
+                                        <input onChange={e => setProfile(e.target.files[0])} type="file" name="" id="profile" hidden />
                                     </label>
 
                                     <p>Upload Profile image</p>

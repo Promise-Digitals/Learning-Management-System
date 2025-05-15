@@ -42,6 +42,7 @@ export const AppContextProvider = (props) => {
                 setUserData(data.user)
                 console.log(data.user)
                 setIsLoggedIn(true)
+                setIsEducator(data.user.isEducator)
             }
         } catch (error) {
             console.log(error)

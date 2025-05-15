@@ -9,7 +9,22 @@ const Navbar = () => {
 
     const isCourseListPage = location.pathname.includes('/course-list')
 
-    const { setShowStudentLogin, isLoggedIn, setIsLoggedIn, backendUrl, navigate, isEducator, userData, setUserData } = useContext(AppContext)
+    const { setShowStudentLogin, isLoggedIn, setIsLoggedIn, backendUrl, navigate, isEducator, userData, setUserData, fetchAuthenticatedUser } = useContext(AppContext)
+
+
+    const updateRoleToEducator = async () => {
+        try {
+            const {data} = await axios.get(backendUrl + "/api/educator/update-role", {withCredentials: true})
+
+            if (data.success) {
+                fetchAuthenticatedUser()
+                toast.success(data.message)
+            }
+        } catch (error) {
+            toast.error("Something went wrong")
+        }
+    }
+
 
     const handleLogout = async () => {
         try {
@@ -35,7 +50,12 @@ const Navbar = () => {
                     {
                         isLoggedIn &&
                         <>
-                            <button onClick={() => { navigate('/educator') }}>{isEducator ? 'Educator Dashboard' : 'Become Educator'}</button>
+                            {
+                                isEducator ?
+                                <button onClick={() => {navigate('/educator')}}>Educator Dashboard</button>
+                                :
+                                <button onClick={updateRoleToEducator}>Become Educator</button>
+                            }
                             |
                             <Link to="/my-enrollments">My Enrollments</Link>
                         </>
@@ -45,7 +65,7 @@ const Navbar = () => {
                 {
                     isLoggedIn ?
                         <div className='relative group'>
-                            <img src={userData.image} className='w-8 h-8 rounded-full  border-3 border-[#1269e2] object-cover object-center' alt="" />
+                            <img src={userData.profile} className='w-8 h-8 rounded-full  border-3 border-[#1269e2] object-cover object-center' alt="" />
 
                             <div className='absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded pt-10'>
                                 <ul className='list-none m-0 p-1 bg-white rounded-md border border-gray-300 text-sm'>

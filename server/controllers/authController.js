@@ -27,13 +27,13 @@ export const registerUser = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10)
 
-        const imageUpload = await cloudinary.uploader.upload(imageFile.path)
+        const profileUpload = await cloudinary.uploader.upload(imageFile.path)
 
         const user = await User.create({
             name,
             email,
             password: hashedPassword,
-            image: imageUpload.secure_url
+            profile: profileUpload.secure_url
         })
 
         await user.save()
