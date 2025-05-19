@@ -6,7 +6,7 @@ const purchaseSchema = new mongoose.Schema({
         ref: 'Course',
         required: true
     },
-    courseId: {
+    userId: {
         type: String,
         ref: 'User',
         required: true
@@ -16,7 +16,7 @@ const purchaseSchema = new mongoose.Schema({
         required: true
     },
     status: {
-        type: Number,
+        type: String,
         enum: ['pending', 'completed', 'failed'],
         default: 'pending'
     },

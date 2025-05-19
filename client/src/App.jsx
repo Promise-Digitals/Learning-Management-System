@@ -16,6 +16,7 @@ import { AppContext } from './context/AppContext'
 import StudentLogin from './components/student/StudentLogin'
 import "quill/dist/quill.snow.css";
 import { ToastContainer} from 'react-toastify';
+import Verify from './pages/student/Verify'
 
 const App = () => {
 
@@ -49,6 +50,7 @@ const App = () => {
           <Route path='my-courses' element={<MyCourses />} />
           <Route path='student-enrolled' element={<StudentsEnrolled />} />
         </Route>
+        <Route path='/verify-stripe' element={<Verify />} />
       </Routes>
     </div>
   )

@@ -9,6 +9,7 @@ import session from 'express-session'
 import connectCloudinary from './configs/cloudinary.js'
 import "./configs/passport.js"
 import educatorRoutes from './routes/educatorRoutes.js'
+import courseRoutes from './routes/courseRoutes.js'
 
 
 // Initialize Express
@@ -41,6 +42,7 @@ app.get('/', (req, res) => res.send("API Working"))
 app.use('/api/auth', authRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/educator', educatorRoutes)
+app.use('/api/course', courseRoutes)
 
 // Google passport authentication
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }))
