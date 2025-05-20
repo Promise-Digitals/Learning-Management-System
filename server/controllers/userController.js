@@ -2,7 +2,7 @@ import Stripe from "stripe";
 import Course from "../models/course.js";
 import { Purchase } from "../models/purchase.js";
 import User from "../models/user.js";
-import { CoursePregress } from "../models/CourseProgress.js";
+import { CourseProgress } from "../models/CourseProgress.js";
 
 // API to get user data
 export const getUserData = async (req, res) => {
@@ -168,7 +168,7 @@ export const updateUserCourseProgress = async (req, res) => {
         const userId = req.user._id
         const {courseId, lectureId} = req.body
 
-        const progressData = await CoursePregress.findOne({userId, courseId})
+        const progressData = await CourseProgress.findOne({userId, courseId})
 
         if (progressData) {
             if (progressData.lectureCompleted.includes(lectureId)) {
@@ -182,7 +182,7 @@ export const updateUserCourseProgress = async (req, res) => {
             await progressData.save()
 
         }else{
-            await CoursePregress.create({
+            await CourseProgress.create({
                 userId,
                 courseId,
                 lectureCompleted: [lectureId]
@@ -206,9 +206,9 @@ export const updateUserCourseProgress = async (req, res) => {
 export const getUserCourseProgress = async (req, res) => {
     try {
         const userId = req.user._id
-        const {courseId, lectureId} = req.body
+        const {courseId} = req.body
 
-        const progressData = await CoursePregress.findOne({userId, courseId})
+        const progressData = await CourseProgress.findOne({userId, courseId})
 
         res.json({
             success: true,
@@ -225,11 +225,11 @@ export const getUserCourseProgress = async (req, res) => {
 
 
 // Add user rating to course
-export const addUserRating = async(req, res){
+export const addUserRating = async(req, res) => {
     const userId = req.user._id
     const {courseId, rating} = req.body;
 
-    if (!courseId || userId || !rating || rating < 1 || rating > 5) {
+    if (!courseId || !userId || !rating || rating < 1 || rating > 5) {
         return res.json({
             success: false,
             message: "Invalid details"

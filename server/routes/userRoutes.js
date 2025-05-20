@@ -10,10 +10,10 @@ router.get('/enrolled-courses', ensureAuthenticated, userEnrolledCourses)
 router.post('/purchase', ensureAuthenticated, purchaseCourse)
 router.post('/verifyStripe', ensureAuthenticated, verifyStripe)
 
-router.post('/update-course-progress',ensureAuthenticated, updateUserCourseProgress)
-router.post('get-course-progress', ensureAuthenticated, getUserCourseProgress)
+router.post('/update-course-progress', ensureAuthenticated, updateUserCourseProgress)
+router.post('/get-course-progress', ensureAuthenticated, getUserCourseProgress)
 
-router.post('add-rating', ensureAuthenticated, addUserRating)
+router.post('/add-rating', ensureAuthenticated, addUserRating)
 
 
 

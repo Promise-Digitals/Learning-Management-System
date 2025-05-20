@@ -1,4 +1,4 @@
-import {createContext, useEffect, useState} from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { dummyCourses } from '../assets/assets';
 import { useNavigate } from 'react-router-dom';
 import humanizeDuration from 'humanize-duration'
@@ -29,18 +29,27 @@ export const AppContextProvider = (props) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
 
 
-     // Fetch all courses
+    // Fetch all courses
     const fetchAllCourses = async () => {
-        setAllCourses(dummyCourses)
+        try {
+            const { data } = await axios.get(backendUrl + '/api/course/all', { withCredentials: true })
+
+            if (data.success) {
+                setAllCourses(data.courses)
+            } else {
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
     }
 
 
     const fetchAuthenticatedUser = async () => {
         try {
-            const {data} = await axios.get(backendUrl + '/api/users/user', { withCredentials: true })
+            const { data } = await axios.get(backendUrl + '/api/users/user', { withCredentials: true })
             if (data.success) {
                 setUserData(data.user)
-                console.log(data.user)
                 setIsLoggedIn(true)
                 setIsEducator(data.user.isEducator)
             }
@@ -62,7 +71,7 @@ export const AppContextProvider = (props) => {
             totalRating += rating.rating
         })
 
-        return totalRating / course.courseRatings.length
+        return Math.floor(totalRating / course.courseRatings.length)
     }
 
 
@@ -70,7 +79,7 @@ export const AppContextProvider = (props) => {
     const calculateChapterTime = (chapter) => {
         let time = 0
         chapter.chapterContent.map((lecture) => time += lecture.lectureDuration)
-        return humanizeDuration(time * 60 * 1000, {units: ["h", "m"]})
+        return humanizeDuration(time * 60 * 1000, { units: ["h", "m"] })
     }
 
 
@@ -80,7 +89,7 @@ export const AppContextProvider = (props) => {
 
         course.courseContent.map((chapter) => chapter.chapterContent.map((lecture) => time += lecture.lectureDuration))
 
-        return humanizeDuration(time * 60 * 1000, {units: ["h", "m"]})
+        return humanizeDuration(time * 60 * 1000, { units: ["h", "m"] })
     }
 
 
@@ -89,7 +98,7 @@ export const AppContextProvider = (props) => {
         let totalLectures = 0;
 
         course.courseContent.forEach(chapter => {
-            if(Array.isArray(chapter.chapterContent)){
+            if (Array.isArray(chapter.chapterContent)) {
                 totalLectures += chapter.chapterContent.length
             }
         });
@@ -99,20 +108,31 @@ export const AppContextProvider = (props) => {
 
     // Fetch User Enrolled Courses
     const fetchUserEnrolledCourses = async () => {
-        setEnrolledCourses(dummyCourses)
+        try {
+
+            const { data } = await axios.get(backendUrl + "/api/users/enrolled-courses", { withCredentials: true })
+
+            if (data.success) {
+                setEnrolledCourses(data.enrolledCourses.reverse())
+            } else {
+                toast.error(data.message)
+            }
+
+        } catch (error) {
+            // toast.error(error.message)
+        }
     }
 
 
     useEffect(() => {
-        fetchAuthenticatedUser()
         fetchAllCourses()
-        fetchUserEnrolledCourses()
     }, [])
 
 
     useEffect(() => {
         fetchAuthenticatedUser()
-    }, [])
+        fetchUserEnrolledCourses()
+    }, [userData])
 
 
     const value = {
@@ -130,7 +150,8 @@ export const AppContextProvider = (props) => {
         fetchUserEnrolledCourses,
         backendUrl,
         userData, setUserData,
-        fetchAuthenticatedUser
+        fetchAuthenticatedUser,
+        fetchAllCourses
     }
 
 

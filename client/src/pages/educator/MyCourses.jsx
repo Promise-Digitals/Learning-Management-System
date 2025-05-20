@@ -1,20 +1,33 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../context/AppContext'
 import Loading from '../../components/student/Loading'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const MyCourses = () => {
 
-    const {currency, allCourses} = useContext(AppContext)
+    const {currency, backendUrl, isEducator} = useContext(AppContext)
 
-    const [courses, setCourses] = useState(null)
+    const [courses, setCourses] = useState([])
 
     const fetchEducatorCourses = async () => {
-        setCourses(allCourses)
+        try {
+            const {data} = await axios.get(backendUrl + "/api/educator/courses", {withCredentials: true})
+
+            data.success && setCourses(data.courses)
+
+        } catch (error) {
+            toast.error(error.message)
+        }
     }
 
+    console.log(courses)
+
     useEffect(() => {
-        fetchEducatorCourses()
-    }, [])
+        if (isEducator) {
+            fetchEducatorCourses()
+        }
+    }, [isEducator])
 
 
     return courses ? (
@@ -40,7 +53,7 @@ const MyCourses = () => {
                                             <img src={course.courseThumbnail} alt="course image" className='w-16' />
                                             <span className='truncate hidden md:block'>{course.courseTitle}</span>
                                         </td>
-                                        <td className='px-4 text-center py-3'>{currency} {Math.floor(course.enrolledStudents.length * (course.coursePrice - course.discount * course.coursePrice / 100))}</td>
+                                        <td className='px-4 text-center py-3'>{currency} {Math.floor(course.coursePrice - course.discount * course.coursePrice / 100)}</td>
                                         <td className='px-4 text-center py-3'>{course.enrolledStudents.length}</td>
                                         <td className='px-4 text-center py-3'>{new Date(course.createdAt).toLocaleDateString()}</td>
                                     </tr>

@@ -96,6 +96,7 @@ export const educatorDashboardData = async (req, res) => {
 
         const courseIds = courses.map(course => course._id);
 
+
         // Calculate total earnings from purchases
         const purchases = await Purchase.find({
             courseId: {$in: courseIds},
@@ -111,6 +112,7 @@ export const educatorDashboardData = async (req, res) => {
             const students = await User.find({
                 _id: {$in: course.enrolledStudents}
             }, 'name profile');
+
 
             students.forEach(student => {
                 enrolledStudentsData.push({
@@ -132,7 +134,7 @@ export const educatorDashboardData = async (req, res) => {
     } catch (error) {
         res.json({
             success: false,
-            message: error.message
+            message: error
         })
     }
 }

@@ -63,7 +63,7 @@ const courseSchema = new mongoose.Schema({
     },
     isPublished: {
         type: Boolean,
-        required: true
+        default: true
     },
     discount: {
         type: Number,
@@ -91,7 +91,7 @@ const courseSchema = new mongoose.Schema({
     },
     enrolledStudents: [
         {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }
     ],
